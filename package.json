@@ -1,0 +1,19 @@
+{
+  "name": "hapi",
+  "version": "1.0.0",
+  "description": "simple hapi.js app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "example_user",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/hoek": "^9.0.4",
+    "@hapi/inert": "^6.0.1",
+    "@hapi/vision": "^6.0.0",
+    "handlebars": "^4.7.6",
+    "mongoose": "^5.9.10"
+  }
+}
