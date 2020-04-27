@@ -38,23 +38,40 @@ const init = async () => {
     method: "GET",
     path: "/tasks",
     handler: (request, h) => {
-      Task.find((err, tasks) => {
-        // console.log(tasks);
-        if (err) {
-          console.log(err);
-        }
-        console.log(tasks);
+      //  Task.find((err, tasks) => {
+      //    console.log(tasks);
+      //   if (err) {
+      //     console.log(err);
+      //   }
+      //   console.log(tasks);
 
-        return h.view("tasks", {
-          tasks: tasks,
-        });
-      });
-
-      // return h.view("tasks", {
-      //   tasks: [{ text: "task1" }, { text: "task2" }, { text: "task3" }],
+      //   return h.view("tasks", {
+      //     tasks: tasks,
+      //   });
       // });
+
+      return h.view("tasks", {
+        tasks: [{ text: "task1" }, { text: "task2" }, { text: "task3" }],
+      });
     },
   });
+  server.route({
+    method: "POST",
+    path: "/tasks",
+    handler: (request, h) => {
+      let text = request.payload.text;
+      let newTask = new Task({ text: text });
+      newTask.save((err, task) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          return h.redirect().location("tasks");
+        }
+      });
+      return res;
+    },
+  });
+
   server.route({
     method: "GET",
     path: "/img",
