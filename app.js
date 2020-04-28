@@ -37,38 +37,56 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/tasks",
-    handler: (request, h) => {
-      //  Task.find((err, tasks) => {
-      //    console.log(tasks);
-      //   if (err) {
-      //     console.log(err);
-      //   }
-      //   console.log(tasks);
-
+    handler: async (request, h) => {
+      try {
+        let result = await Task.find((err, tasks) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            return tasks;
+          }
+        }).lean();
+        // console.log(result);
+        return h.view("tasks", {
+          tasks: result,
+        });
+      } catch (err) {
+        return h.response(err).code(500);
+      }
+      // try {
       //   return h.view("tasks", {
-      //     tasks: tasks,
+      //     tasks: [
+      //       { id: 1, text: "task1" },
+      //       { id: 2, text: "task2" },
+      //       { id: 3, text: "task3" },
+      //     ],
       //   });
-      // });
-
-      return h.view("tasks", {
-        tasks: [{ text: "task1" }, { text: "task2" }, { text: "task3" }],
-      });
+      // } catch (err) {
+      //   return console.log(err);
+      // }
     },
   });
   server.route({
     method: "POST",
     path: "/tasks",
-    handler: (request, h) => {
-      let text = request.payload.text;
-      let newTask = new Task({ text: text });
-      newTask.save((err, task) => {
-        if (err) {
-          return console.log(err);
-        } else {
-          return h.redirect().location("tasks");
-        }
-      });
-      return res;
+    handler: async (request, h) => {
+      try {
+        let task = new Task(request.payload);
+        let result = await task.save((err, task) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            // console.log(task);
+
+            return task;
+          }
+        });
+
+        return h.redirect().location("tasks", { tasks: result });
+      } catch (err) {
+        console.log(err);
+        return h.response(err).code(500);
+      }
     },
   });
 
