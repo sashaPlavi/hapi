@@ -76,8 +76,6 @@ const init = async () => {
           if (err) {
             return console.log(err);
           } else {
-            // console.log(task);
-
             return task;
           }
         });
@@ -86,6 +84,19 @@ const init = async () => {
       } catch (err) {
         console.log(err);
         return h.response(err).code(500);
+      }
+    },
+  });
+
+  server.route({
+    method: "DELETE",
+    path: `/tasks/{id}`,
+    handler: async (request, h) => {
+      try {
+        let deleted = `Hello ${request.params.id}!`;
+        return h.redirect().location("", { tasks: deleted });
+      } catch (err) {
+        return console.log(err);
       }
     },
   });
